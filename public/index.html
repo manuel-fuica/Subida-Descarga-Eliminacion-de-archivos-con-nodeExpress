@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subir facturas</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="formulario">
+            <h2>Subir facturas</h2>
+            <form id="formulario" enctype="multipart/form-data" method="POST" action="/upload"
+                onsubmit="enviarFormulario(event)">
+                <div class="form-group">
+                    <label for="factura">Seleccione la factura:</label>
+                    <input type="file" class="form-control" id="factura" name="factura" accept=".pdf, .jpg, .jpeg, .png"
+                        required>
+                </div>
+                <div class="form-group">
+                    <label for="descripcion">Descripción:</label>
+                    <textarea class="form-control" id="descripcion" name="descripcion" rows="13"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Subir factura</button>
+                <button class="btn btn-primary" onclick="location.href='files.html'">Ver archivos</button>
+                <div id="mensaje"></div>
+            </form>
+        </div>
+    </div>
+    <script>
+        function enviarFormulario(event) {
+            event.preventDefault(); // Evita que el formulario se envíe de manera normal
+            const formData = new FormData(event.target); // Crea un objeto FormData con los datos del formulario
+            fetch('/upload', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Aquí puedes agregar código para manejar la respuesta del servidor
+                    window.location.href = '/files'; // Redirige a la ruta /files
+                })
+                .catch(error => console.error('Error al enviar el formulario:', error));
+        }
+    </script>
+</body>
+
+</html>
